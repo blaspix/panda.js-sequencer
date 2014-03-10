@@ -6,7 +6,7 @@ The plugin goal is to provide an easy way to animate a sprite with spritesheet s
 Please donate to help BLASPIX support the ongoing development.
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif "Donate")](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QR5TU7Q8NEANQ)
 
-### Usage example
+### Usage
 
 **src/game/main.js**
 ```
@@ -26,17 +26,18 @@ SceneGame = game.Scene.extend({
 
     init: function() {
 
-        var piggySprite = new game.Sequencer('piggy####.png', '125-184,183-126');
+        var piggySprite = new game.Sequencer('piggy####.png', '0');
+        piggySprite.addSequence('idle', '125-184,183-126');
         piggySprite.addSequence('poop', '299-320,319*3,318-309,310-327,326-321,320*5,321-351');
         piggySprite.addSequence('look', '77-123,124*20,123-78');
         piggySprite.addSequence('walk', '0-23');
 
         piggySprite.animationSpeed = .3;
 
-        piggySprite.playSequence();
+        piggySprite.playSequence('idle');
         console.log(piggySprite.sequence);
 
-        this.addTimer(game.Math.random(2000, 10000), function() {
+        this.addTimer(2000, function() {
 
             piggySprite.loop = false;
 
