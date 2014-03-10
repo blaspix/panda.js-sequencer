@@ -8,7 +8,7 @@ game.module(
 
 game.Sequencer = game.MovieClip.extend({
 
-    sequence: 'idle',
+    sequence: 'default',
     sequences: [],
 
     init: function(pattern, sequence) {
