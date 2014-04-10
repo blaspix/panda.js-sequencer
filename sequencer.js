@@ -1,17 +1,15 @@
 game.module(
     'plugins.sequencer'
 )
-.require(
-    'engine.sprite'
-)
 .body(function () {
 
 game.Sequencer = game.MovieClip.extend({
 
+    settings: {},
     sequence: 'default',
     sequences: [],
 
-    init: function(pattern, sequence) {
+    init: function(pattern, sequence, loop, animationSpeed) {
         var match;
         if (match = pattern.match(/([a-z-]*)([#]+)([a-z.]*)/)) {
             this.prefix = match[1];
@@ -19,15 +17,29 @@ game.Sequencer = game.MovieClip.extend({
             this.suffix = match[3];
             this.addSequence(this.sequence, sequence);
             this._super(this.sequences[this.sequence]);
+            this.settings.loop = typeof loop == 'boolean' ? loop : this.loop;
+            if(typeof animationSpeed == 'number') {
+                this.settings.animationSpeed =  animationSpeed;
+            } else {
+                this.settings.animationSpeed =  this.animationSpeed;
+            }
+            this.animationSpeed = this.settings.animationSpeed;
+            this.loop = this.settings.loop;
         } else {
-            console.log('invalid pattern');
+            console.error('invalid pattern');
         }
     },
 
-    playSequence: function(name) {
-        if(name) {
+    playSequence: function(name, loop, animationSpeed) {
+        if(typeof name == 'string') {
             this.sequence = name;
             this.textures = this.sequences[this.sequence];
+        }
+        this.loop = typeof loop == 'boolean' ? loop : this.settings.loop;
+        if(typeof animationSpeed == 'number') {
+            this.animationSpeed =  animationSpeed;
+        } else {
+            this.animationSpeed =  this.settings.animationSpeed;
         }
         this.gotoAndPlay(0);
     },

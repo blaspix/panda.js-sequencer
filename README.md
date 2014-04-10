@@ -19,50 +19,46 @@ game.module(
 )
 .body(function() {
 
-game.addAsset('src/plugins/example.json');
+game.addAsset('example.json');
 
 SceneGame = game.Scene.extend({
     backgroundColor: 0xffffff,
 
     init: function() {
 
-        var piggySprite = new game.Sequencer('piggy####.png', '0');
-        piggySprite.addSequence('idle', '125-184,183-126');
-        piggySprite.addSequence('poop', '299-320,319*3,318-309,310-327,326-321,320*5,321-351');
-        piggySprite.addSequence('look', '77-123,124*20,123-78');
-        piggySprite.addSequence('walk', '0-23');
+        var sprite;
 
-        piggySprite.animationSpeed = .3;
+        sprite = new game.Sequencer('piggy####.png', '0', false, .4);
+        sprite.addSequence('idle', '125-184,183-126');
+        sprite.addSequence('poop', '299-320,319*3,318-309,310-327,326-321,320*5,321-351');
+        sprite.addSequence('look', '77-123,124*20,123-78');
+        sprite.addSequence('walk', '0-23');
 
-        piggySprite.playSequence('idle');
-        console.log(piggySprite.sequence);
+        sprite.anchor = {x: .5, y:.5};
+        sprite.position = {x: game.system.width / 2, y: game.system.height / 2};
+
+        sprite.playSequence('idle', true);
+        console.log(sprite.sequence);
 
         this.addTimer(2000, function() {
 
-            piggySprite.loop = false;
+            sprite.playSequence('poop', false, .3);
+            console.log(sprite.sequence);
 
-            piggySprite.playSequence('poop');
-            console.log(piggySprite.sequence);
+            sprite.onComplete = function () {
 
-            piggySprite.onComplete = function () {
+                sprite.playSequence('look');
+                console.log(sprite.sequence);
 
-                piggySprite.playSequence('look');
-                console.log(piggySprite.sequence);
+                sprite.onComplete = function () {
 
-                piggySprite.onComplete = function () {
-
-                    piggySprite.loop = true;
-
-                    piggySprite.playSequence('walk');
-                    console.log(piggySprite.sequence);
+                    sprite.playSequence('walk', true);
+                    console.log(sprite.sequence);
                 }
             }
         });
 
-        piggySprite.anchor = {x: .5, y:.5};
-        piggySprite.position = {x: game.system.width / 2, y: game.system.height / 2};
-
-        game.scene.stage.addChild(piggySprite);
+        game.scene.stage.addChild(sprite);
 
     }
 });
