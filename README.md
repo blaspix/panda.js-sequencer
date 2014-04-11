@@ -14,7 +14,6 @@ game.module(
     'game.main'
 )
 .require(
-    'engine.core',
     'plugins.sequencer'
 )
 .body(function() {
