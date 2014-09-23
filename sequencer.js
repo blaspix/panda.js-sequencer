@@ -2,6 +2,7 @@ game.module(
     'plugins.sequencer'
 )
 .body(function () {
+'use strict';
 
 game.Sequencer = game.PIXI.MovieClip.extend({
 
