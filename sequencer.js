@@ -1,12 +1,9 @@
 game.module(
     'plugins.sequencer'
 )
-.require(
-    'engine.sprite'
-)
 .body(function () {
 
-game.Sequencer = game.MovieClip.extend({
+game.Sequencer = game.PIXI.MovieClip.extend({
 
     settings: {},
     sequence: 'default',
